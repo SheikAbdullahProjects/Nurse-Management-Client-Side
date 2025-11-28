@@ -6,10 +6,20 @@ import { toast } from "react-toastify";
 import SearchBar from "./components/SearchBar";
 import DataContent from "./components/DataContent";
 import AddContent from "./components/AddContent";
+import Pagination from "./components/Pagination";
 
 export default function NurseManagement() {
   const [data, setData] = useState([]);
+  const [total, setTotal] = useState(0);
+
+
   const [search, setSearch] = useState("");
+  const [sortBy, setSortBy] = useState("id");
+  const [sortOrder, setSortOrder] = useState("ASC");
+
+  const [page, setPage] = useState(1);
+  const [limit] = useState(10);
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [form, setForm] = useState({
@@ -64,15 +74,24 @@ export default function NurseManagement() {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [sortBy, sortOrder, search, page, limit]);
 
   const fetchData = async () => {
     try {
       setLoading(true);
       setError(null);
-      const response = await axios.get("http://localhost:3000/api/nurses");
+      const response = await axios.get("http://localhost:3000/api/nurses",{
+        params: {
+          page,
+          limit,
+          search,
+          sortBy,
+          sortOrder
+        }
+      });
       if (response.data.success) {
         setData(response.data.data);
+        setTotal(response.data.total);
       } else {
         setError("Failed to fetch data");
       }
@@ -87,6 +106,17 @@ export default function NurseManagement() {
   const formatDate = (iso) => {
     return iso.split("T")[0];
   };
+
+  const handleSort = (field) => {
+    if (sortBy === field) {
+      const newOrder = sortOrder === "ASC" ? "DESC" : "ASC";
+      setSortOrder(newOrder);
+    } else {
+      setSortBy(field);
+      setSortOrder("ASC");
+    }
+  }
+  
 
   if (loading) {
     return <div className="text-center mt-20">Loading...</div>;
@@ -112,6 +142,9 @@ export default function NurseManagement() {
           search={search}
           formatDate={formatDate}
           handleRemove={handleRemove}
+          handleSort={handleSort}
+          sortBy={sortBy}
+          sortOrder={sortOrder}
         />
 
         <AddContent
@@ -119,6 +152,7 @@ export default function NurseManagement() {
           handleChange={handleChange}
           handleAdd={handleAdd}
         />
+        <Pagination page={page} setPage={setPage} limit={limit} total={total} />
       </div>
     </div>
   );

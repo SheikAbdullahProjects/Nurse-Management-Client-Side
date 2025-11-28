@@ -14,7 +14,7 @@ const SearchBar = ({ search, setSearch }) => {
           <div className="flex gap-3">
             <button
               onClick={() =>
-                (window.location.href = "http://localhost:3000/api/nurses/csv")
+                (window.location.href = `http://localhost:3000/api/nurses/csv?search=${search}`)
               }
               className="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300"
             >
@@ -24,7 +24,7 @@ const SearchBar = ({ search, setSearch }) => {
             <button
               onClick={() =>
                 (window.location.href =
-                  "http://localhost:3000/api/nurses/excel")
+                  `http://localhost:3000/api/nurses/excel?search=${search}`)
               }
               className="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300"
             >

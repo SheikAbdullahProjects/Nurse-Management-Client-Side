@@ -1,16 +1,16 @@
 import React from 'react'
 
-const DataContent = ({ data, search, formatDate, handleRemove }) => {
+const DataContent = ({ data, search, formatDate, handleRemove, handleSort, sortBy, sortOrder }) => {
   return (
     <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
               <tr className="bg-gray-100 text-gray-700">
-                <th className="p-3 border">Id</th>
-                <th className="p-3 border">Name</th>
-                <th className="p-3 border">License Number</th>
-                <th className="p-3 border">Date of Birth</th>
-                <th className="p-3 border">Age</th>
+                <th className="p-3 border" onClick={() => handleSort("id")}>Id {sortBy === "id" ? (sortOrder === "ASC" ? "▲" : "▼") : ""} </th>
+                <th className="p-3 border" onClick={() => handleSort("name")}>Name {sortBy === "name" ? (sortOrder === "ASC" ? "▲" : "▼") : ""} </th>
+                <th className="p-3 border" onClick={() => handleSort("license_number")}>License Number {sortBy === "license_number" ? (sortOrder === "ASC" ? "▲" : "▼") : ""} </th>
+                <th className="p-3 border" onClick={() => handleSort("dob")}>Date of Birth {sortBy === "dob" ? (sortOrder === "ASC" ? "▲" : "▼") : ""} </th>
+                <th className="p-3 border" onClick={() => handleSort("age")}>Age {sortBy === "age" ? (sortOrder === "ASC" ? "▲" : "▼") : ""} </th>
                 <th className="p-3 border text-center">Action</th>
               </tr>
             </thead>
